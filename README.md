@@ -9,14 +9,29 @@ module "acm_ops" {
   source = "modules/aws_acm_certificate"
   domain_names = ["ops.acme.net", "*.ops.acme.net"]
   zone_id = "${data.aws_route53_zone.external.id}"
+  providers = {
+    "aws.acm" = "aws",
+    "aws.route53" = "aws",
+  }
 }
 
 module "acm_marketing" {
   source = "modules/aws_acm_certificate"
   domain_names = ["acme.com", "*.acme.com"]
   zone_id = "${data.aws_route53_zone.acme.id}"
+  providers = {
+    "aws.acm" = "aws.marketing",
+    "aws.route53" = "aws.ops",
+  }
 }
 ```
+
+## Providers
+
+| Name | Description |
+|------|-------------|
+| aws.acm | AWS provider to use for issuing the certificate |
+| aws.route53 | AWS provider to use for publishing validation records to Route53 |
 
 ## Inputs
 
