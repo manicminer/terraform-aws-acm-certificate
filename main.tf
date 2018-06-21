@@ -4,7 +4,7 @@ resource "aws_acm_certificate" "main" {
   subject_alternative_names = "${slice(var.domain_names, 1, length(var.domain_names))}"
   validation_method = "DNS"
   tags {
-    Name = "${var.domain_names[0]}"
+    Name = "${replace(var.domain_names[0], "*.", "star.")}"
     terraform = "true"
   }
 }
